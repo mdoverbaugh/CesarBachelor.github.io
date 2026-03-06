@@ -787,7 +787,6 @@ export default function App() {
             "If it says MANDATORY — it's mandatory. No excuses. No \"I'm tired.\" No \"I'll catch up.\"",
             "If the bus says 9:55, be there at 9:45. We are not circling back for you. You will be roasted in the group chat.",
             "Cesar doesn't pay for ANYTHING. Drinks, food, cabs — that man's wallet stays in his pocket all weekend.",
-            "What happens on this trip stays on this trip. Phones on silent. Screenshots will be treated as treason.",
             "Hydrate. Vegas will humble you faster than you think. Drink water between drinks.",
             "Don't be the guy who disappears. If you're leaving the group, text the chat.",
             "Adrian stays out of the deep end. Non-negotiable. 🚫🏊",
