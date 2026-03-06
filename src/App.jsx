@@ -1,18 +1,38 @@
 import { useState, useRef, useEffect } from "react";
 
+const COLOR_OPTIONS = [
+  { name: "Gold", value: "#C9A84C" },
+  { name: "Ruby", value: "#8B2942" },
+  { name: "Royal Blue", value: "#3B5EAB" },
+  { name: "Emerald", value: "#2D8B5E" },
+  { name: "Purple", value: "#7B3FA0" },
+  { name: "Silver", value: "#8A8A9A" },
+  { name: "Copper", value: "#B87333" },
+  { name: "Crimson", value: "#C74B6F" },
+  { name: "Teal", value: "#2A9D8F" },
+  { name: "Ivory", value: "#F0EAE0" },
+];
+
+const EMOJI_OPTIONS = [
+  "🤵","🏆","💻","🏴‍☠️","🃏","🎯","🎰","💰","🥊","🐻","🎸","👑",
+  "🔥","⚡","🎲","🎳","🎮","🏎️","💎","🦁","🐺","🦅","🍺","🥃",
+  "💪","🎤","🏀","⚽","🎵","🎶","🤑","😎","🫡","🧊","🌙","⭐",
+  "🗡️","🛡️","💣","🎪","🃏","🪩","🍾","🥂","🏈","🎱","🧨","🫶",
+];
+
 const INITIAL_GUESTS = [
-  { id: 1, name: "Cesar", emoji: "🤵", role: "THE GROOM", roleClass: "groom", desc: "The man, the myth, the soon-to-be-married legend. This is HIS weekend." },
-  { id: 2, name: "Chris", emoji: "🏆", role: "BEST MAN", roleClass: "bestman", desc: "The best man. Holding it down for Cesar since day one." },
-  { id: 3, name: "Michael", emoji: "💻", role: "WEBSITE GUY", roleClass: "webguy", desc: "Built this whole site so y'all wouldn't be lost. You're welcome." },
-  { id: 4, name: "Nate", emoji: "🏴‍☠️", role: "OG HOMIE", roleClass: "og", desc: "The One Piece glazer. Him and Michael are the OG homies. Certified day-one." },
-  { id: 5, name: "Omar", emoji: "🃏", role: "CREW", roleClass: "crew", desc: "" },
-  { id: 6, name: "Kevin", emoji: "🎯", role: "CREW", roleClass: "crew", desc: "" },
-  { id: 7, name: "Anthony", emoji: "🎰", role: "CREW", roleClass: "crew", desc: "" },
-  { id: 8, name: "Adrian", emoji: "💰", role: "MASTER GAMBLER", roleClass: "gambler", desc: "Will bet on anything. Will win on anything. Just don't push him in the pool — this man CANNOT swim. 🚫🏊" },
-  { id: 9, name: "Justin", emoji: "🥊", role: "CREW", roleClass: "crew", desc: "" },
-  { id: 10, name: "Vladimir", emoji: "🐻", role: "CREW", roleClass: "crew", desc: "" },
-  { id: 11, name: "Steve", emoji: "🎸", role: "CREW", roleClass: "crew", desc: "" },
-  { id: 12, name: "TBD", emoji: "❓", role: "MYSTERY SOLDIER", roleClass: "mystery", desc: "Nobody knows who this guy is. Not even Michael. But he's coming." },
+  { id: 1, name: "Cesar", emoji: "🤵", role: "THE GROOM", color: "#C9A84C", desc: "The man, the myth, the soon-to-be-married legend. This is HIS weekend." },
+  { id: 2, name: "Chris", emoji: "🏆", role: "BEST MAN", color: "#F0EAE0", desc: "The best man. Holding it down for Cesar since day one." },
+  { id: 3, name: "Michael", emoji: "💻", role: "WEBSITE GUY", color: "#3B5EAB", desc: "Built this whole site so y'all wouldn't be lost. You're welcome." },
+  { id: 4, name: "Nate", emoji: "🏴‍☠️", role: "OG HOMIE", color: "#8B2942", desc: "The One Piece glazer. Him and Michael are the OG homies. Certified day-one." },
+  { id: 5, name: "Omar", emoji: "🃏", role: "CREW", color: "#8A8A9A", desc: "" },
+  { id: 6, name: "Kevin", emoji: "🎯", role: "CREW", color: "#8A8A9A", desc: "" },
+  { id: 7, name: "Anthony", emoji: "🎰", role: "CREW", color: "#8A8A9A", desc: "" },
+  { id: 8, name: "Adrian", emoji: "💰", role: "MASTER GAMBLER", color: "#C9A84C", desc: "Will bet on anything. Will win on anything. Just don't push him in the pool — this man CANNOT swim. 🚫🏊" },
+  { id: 9, name: "Justin", emoji: "🥊", role: "CREW", color: "#8A8A9A", desc: "" },
+  { id: 10, name: "Vladimir", emoji: "🐻", role: "CREW", color: "#8A8A9A", desc: "" },
+  { id: 11, name: "Steve", emoji: "🎸", role: "CREW", color: "#8A8A9A", desc: "" },
+  { id: 12, name: "Adrian", emoji: "⚡", role: "CREW", color: "#7B3FA0", desc: "The other Adrian. Mystery soldier — finally identified." },
 ];
 
 const SCHEDULE = [
@@ -424,26 +444,16 @@ const css = `
     border-radius: 12px; padding: 1.5rem 1.2rem;
     text-align: center; transition: all 0.3s; position: relative; overflow: hidden;
   }
-  .r-card:hover { background: var(--dark-card-hover); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
-  .r-card.groom { border-color: rgba(201,168,76,0.4); background: rgba(201,168,76,0.04); }
-  .r-card.bestman { border-color: rgba(240,234,224,0.2); background: rgba(240,234,224,0.02); }
-  .r-card.og { border-color: rgba(139,41,66,0.3); background: rgba(139,41,66,0.04); }
-  .r-card.webguy { border-color: rgba(100,149,237,0.25); background: rgba(100,149,237,0.03); }
-  .r-card.gambler { border-color: rgba(201,168,76,0.3); background: rgba(201,168,76,0.03); }
-  .r-card.mystery { border-color: rgba(255,255,255,0.08); background: rgba(255,255,255,0.01); }
+  .r-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
 
   .r-avatar {
     width: 60px; height: 60px; border-radius: 50%;
-    background: rgba(201,168,76,0.06); border: 1px solid var(--border);
     display: flex; align-items: center; justify-content: center;
     margin: 0 auto 0.8rem; font-size: 1.6rem;
+    transition: all 0.3s;
   }
-  .r-card.groom .r-avatar { background: rgba(201,168,76,0.12); border-color: rgba(201,168,76,0.3); }
   .r-name { font-family: 'Cinzel', serif; font-weight: 700; font-size: 1.1rem; letter-spacing: 1px; color: var(--ivory); }
   .r-role { font-family: 'Cinzel', serif; font-weight: 500; font-size: 0.6rem; letter-spacing: 3px; margin-top: 0.3rem; text-transform: uppercase; }
-  .role-groom { color: var(--gold); } .role-bestman { color: var(--ivory); }
-  .role-og { color: var(--ruby-light); } .role-webguy { color: #6495ED; }
-  .role-gambler { color: var(--gold); } .role-mystery { color: var(--muted); } .role-crew { color: var(--muted); }
   .r-desc { font-size: 0.78rem; color: var(--muted); margin-top: 0.6rem; line-height: 1.55; font-style: italic; }
   .r-edit-btn {
     position: absolute; top: 10px; right: 10px;
@@ -489,6 +499,65 @@ const css = `
     font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; cursor: pointer;
   }
   .btn-cancel:hover { border-color: rgba(255,255,255,0.15); color: var(--ivory); }
+
+  /* EMOJI PICKER */
+  .emoji-picker-label { display: flex; align-items: center; justify-content: space-between; }
+  .emoji-current { font-size: 1.5rem; }
+  .emoji-grid {
+    display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px;
+    background: rgba(255,255,255,0.02); border: 1px solid rgba(201,168,76,0.1);
+    border-radius: 8px; padding: 8px; margin-top: 6px; max-height: 160px; overflow-y: auto;
+  }
+  .emoji-grid::-webkit-scrollbar { width: 4px; }
+  .emoji-grid::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 4px; }
+  .emoji-opt {
+    font-size: 1.3rem; padding: 6px; border-radius: 6px; cursor: pointer;
+    background: none; border: 2px solid transparent;
+    transition: all 0.15s; text-align: center; line-height: 1;
+  }
+  .emoji-opt:hover { background: rgba(201,168,76,0.1); }
+  .emoji-opt.selected { border-color: var(--gold); background: rgba(201,168,76,0.15); }
+
+  /* COLOR PICKER */
+  .color-grid {
+    display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px;
+  }
+  .color-opt {
+    width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+    border: 3px solid transparent; transition: all 0.2s;
+    position: relative;
+  }
+  .color-opt:hover { transform: scale(1.15); }
+  .color-opt.selected { border-color: var(--ivory); transform: scale(1.15); }
+  .color-opt.selected::after {
+    content: '✓'; position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; font-weight: 700;
+    color: white; text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  }
+  .color-name {
+    font-family: 'Cinzel', serif; font-size: 0.6rem; font-weight: 500;
+    letter-spacing: 2px; color: var(--muted); margin-top: 8px; text-align: center;
+    text-transform: uppercase;
+  }
+
+  /* PREVIEW */
+  .edit-preview {
+    background: var(--dark); border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 10px; padding: 1.2rem; margin-top: 1.2rem;
+    text-align: center;
+  }
+  .edit-preview-label {
+    font-family: 'Cinzel', serif; font-size: 0.55rem; font-weight: 600;
+    letter-spacing: 3px; color: var(--gold-dim); margin-bottom: 0.8rem; text-transform: uppercase;
+  }
+  .preview-avatar {
+    width: 50px; height: 50px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 0.5rem; font-size: 1.4rem;
+  }
+  .preview-name { font-family: 'Cinzel', serif; font-weight: 700; font-size: 0.95rem; color: var(--ivory); }
+  .preview-role { font-family: 'Cinzel', serif; font-weight: 500; font-size: 0.5rem; letter-spacing: 3px; margin-top: 0.2rem; text-transform: uppercase; }
 
   /* ===== PHOTOS ===== */
   .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
@@ -544,7 +613,7 @@ export default function App() {
   const [schedView, setSchedView] = useState("cards");
   const [guests, setGuests] = useState(INITIAL_GUESTS);
   const [editGuest, setEditGuest] = useState(null);
-  const [editForm, setEditForm] = useState({ name: "", role: "", desc: "" });
+  const [editForm, setEditForm] = useState({ name: "", role: "", desc: "", emoji: "", color: "" });
   const [photos, setPhotos] = useState([]);
   const [lightboxIdx, setLightboxIdx] = useState(null);
   const [cd, setCd] = useState({ d: 0, h: 0, m: 0, s: 0, done: false });
@@ -568,9 +637,9 @@ export default function App() {
     return () => clearInterval(id);
   }, []);
 
-  const openEdit = (g) => { setEditGuest(g); setEditForm({ name: g.name, role: g.role, desc: g.desc }); };
+  const openEdit = (g) => { setEditGuest(g); setEditForm({ name: g.name, role: g.role, desc: g.desc, emoji: g.emoji, color: g.color }); };
   const saveEdit = () => {
-    setGuests(prev => prev.map(g => g.id === editGuest.id ? { ...g, name: editForm.name, role: editForm.role, desc: editForm.desc } : g));
+    setGuests(prev => prev.map(g => g.id === editGuest.id ? { ...g, name: editForm.name, role: editForm.role, desc: editForm.desc, emoji: editForm.emoji, color: editForm.color } : g));
     setEditGuest(null);
   };
   const handlePhoto = (e) => {
@@ -715,12 +784,18 @@ export default function App() {
           <div className="page-divider" />
           <div className="roster-grid">
             {guests.map(g => (
-              <div key={g.id} className={`r-card ${g.roleClass}`}>
-                {g.roleClass==="groom" && <div className="r-crown">👑</div>}
+              <div key={g.id} className="r-card" style={{
+                borderColor: `${g.color}44`,
+                background: `${g.color}08`,
+              }}>
+                {g.role === "THE GROOM" && <div className="r-crown">👑</div>}
                 <button className="r-edit-btn" onClick={() => openEdit(g)}>Edit</button>
-                <div className="r-avatar">{g.emoji}</div>
+                <div className="r-avatar" style={{
+                  background: `${g.color}18`,
+                  border: `1px solid ${g.color}33`,
+                }}>{g.emoji}</div>
                 <div className="r-name">{g.name}</div>
-                <div className={`r-role role-${g.roleClass}`}>{g.role}</div>
+                <div className="r-role" style={{ color: g.color }}>{g.role}</div>
                 {g.desc && <div className="r-desc">{g.desc}</div>}
               </div>
             ))}
@@ -731,14 +806,52 @@ export default function App() {
       {/* EDIT MODAL */}
       {editGuest && (
         <div className="modal-overlay" onClick={e => { if(e.target===e.currentTarget) setEditGuest(null); }}>
-          <div className="modal">
-            <div className="modal-title">Edit — {editGuest.name}</div>
+          <div className="modal" style={{ maxHeight: "90vh", overflowY: "auto" }}>
+            <div className="modal-title">Edit — {editForm.name || editGuest.name}</div>
+
             <label>Name</label>
             <input value={editForm.name} onChange={e => setEditForm(p=>({...p,name:e.target.value}))} />
+
             <label>Role / Title</label>
-            <input value={editForm.role} onChange={e => setEditForm(p=>({...p,role:e.target.value}))} />
+            <input value={editForm.role} onChange={e => setEditForm(p=>({...p,role:e.target.value}))} placeholder="e.g. THE GROOM, BEST MAN, CREW..." />
+
+            <label className="emoji-picker-label">
+              <span>Emoji</span>
+              <span className="emoji-current">{editForm.emoji}</span>
+            </label>
+            <div className="emoji-grid">
+              {EMOJI_OPTIONS.map((em, i) => (
+                <button key={i} className={`emoji-opt ${editForm.emoji === em ? "selected" : ""}`}
+                  onClick={() => setEditForm(p=>({...p, emoji: em}))}>{em}</button>
+              ))}
+            </div>
+
+            <label>Card Color</label>
+            <div className="color-grid">
+              {COLOR_OPTIONS.map((c, i) => (
+                <button key={i} className={`color-opt ${editForm.color === c.value ? "selected" : ""}`}
+                  style={{ background: c.value }}
+                  onClick={() => setEditForm(p=>({...p, color: c.value}))}
+                  title={c.name} />
+              ))}
+            </div>
+            <div className="color-name">
+              {COLOR_OPTIONS.find(c => c.value === editForm.color)?.name || "Custom"}
+            </div>
+
             <label>Description</label>
-            <textarea value={editForm.desc} onChange={e => setEditForm(p=>({...p,desc:e.target.value}))} />
+            <textarea value={editForm.desc} onChange={e => setEditForm(p=>({...p,desc:e.target.value}))} placeholder="Add a funny description, inside joke, etc..." />
+
+            {/* LIVE PREVIEW */}
+            <div className="edit-preview" style={{ borderColor: `${editForm.color}33`, background: `${editForm.color}08` }}>
+              <div className="edit-preview-label">Preview</div>
+              <div className="preview-avatar" style={{ background: `${editForm.color}18`, border: `1px solid ${editForm.color}33` }}>
+                {editForm.emoji}
+              </div>
+              <div className="preview-name">{editForm.name || "Name"}</div>
+              <div className="preview-role" style={{ color: editForm.color }}>{editForm.role || "ROLE"}</div>
+            </div>
+
             <div className="modal-btns">
               <button className="btn-cancel" onClick={() => setEditGuest(null)}>Cancel</button>
               <button className="btn-save" onClick={saveEdit}>Save</button>
@@ -787,6 +900,7 @@ export default function App() {
             "If it says MANDATORY — it's mandatory. No excuses. No \"I'm tired.\" No \"I'll catch up.\"",
             "If the bus says 9:55, be there at 9:45. We are not circling back for you. You will be roasted in the group chat.",
             "Cesar doesn't pay for ANYTHING. Drinks, food, cabs — that man's wallet stays in his pocket all weekend.",
+            "What happens on this trip stays on this trip. Phones on silent. Screenshots will be treated as treason.",
             "Hydrate. Vegas will humble you faster than you think. Drink water between drinks.",
             "Don't be the guy who disappears. If you're leaving the group, text the chat.",
             "Adrian stays out of the deep end. Non-negotiable. 🚫🏊",
