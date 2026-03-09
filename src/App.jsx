@@ -72,10 +72,12 @@ const SCHEDULE = [
         location: "Carmine's Italian Restaurant — Forum Shops at Caesars",
         address: "3500 S Las Vegas Blvd, Las Vegas, NV 89109",
         desc: "Italian family-style dinner. Literally across the street from our hotel. Portions are MASSIVE, meant to share. Come hungry. This is the squad dinner so everyone needs to be there. Look presentable. Reservation for 12." },
-      { time: "After Dinner", title: "After Dinner Plans", emoji: "🤫", tag: "TO BE ANNOUNCED", tagType: "tba",
-        location: "TBA",
-        address: "Details coming soon",
-        desc: "Something is in the works. Details are being finalized. Stay ready so you don't have to get ready." },
+      { time: "9:30 PM", title: "MicroMania Midget Wrestling", emoji: "🤼", tag: "SATURDAY NIGHT EVENT", tagType: "mandatory",
+        location: "Nerd Bar — Neonopolis, Fremont Street",
+        address: "450 Fremont St, Las Vegas, NV 89101",
+        desc: "THIS is the Saturday night move. MicroMania Midget Wrestling at Micro Square Garden inside Nerd Bar on Fremont Street. High-energy wrestling, comedy, and absolute chaos. Doors open at 9:30, show starts at 10 PM. This is a 21+ event. Cesar's bachelor party is about to go down in history.",
+        note: "Doors: 9:30 PM · Show: 10:00 PM · Presale: $30 GA / $40 Ringside · 21+ only",
+        callout: { title: "🎟️ Ticket Info", text: "General Admission: $30 presale ($35 at door). Ringside Seats: $40 presale ($45 at door). Group discount available for 10+ — talk to Michael if you haven't grabbed your ticket yet. VIP package with booth for 6 + championship belt souvenir is $500 if we want to go all out." } },
     ]
   },
   {
